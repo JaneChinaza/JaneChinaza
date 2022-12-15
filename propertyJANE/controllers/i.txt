@@ -1,0 +1,40 @@
+					if($mail->sendmessage()){
+                        $agentEmail = $property['email_address'];
+                        $email = $_SESSION['email'];;
+                        $message = ucwords($_SESSION['last_name']." ".$_SESSION['first_name' ]) ."( email address: ". $email. " Phone no: ". $_SESSION['phone_no']. " ) " . requested for property with property id ". $property['id']. 
+                        "<br>Name: ".$property['property_name'].
+                        "<br>Address: ".$property['property_address'].
+                        "<br>status: ".$property['property_status'].
+                        "<br>type: ".$property['property_type'].
+                        "<br><br>You are in charge of this property, kindly communicate with ". $_SESSION['first_name' ];
+                        ;
+                        
+                            $mail = new Mailer();
+                            $mail->receiver = $agentEmail;
+                            $mail->subject = "Property Request";
+                            $template = $mail->mailTemplate();
+                            $sitename = 'Agnes.con';
+                            $mail->body = $mail->inject($template, $sitename, "Property Request <br> ", " $message <br><br> Thanks <br> from $sitename...");
+                        header('Location: /property/request_message');
+                        exit;
+                    }else{
+                        header('Location: /properties');
+                        exit;
+                    }
+            }
+        } 
+    }
+
+    public function request_message(Router $router){
+        $router->renderView('property/request');
+    }
+    
+}
+
+else{
+						$errors = 'msg, An error might have occured';
+                            header('Location: /contact_us');
+                            exit;
+					}
+                header('Location: /properties');
+                exit;
